@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 22px;
+            font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+            background-color: #333;
+            color: #eee;
+        }
+
+        .numButton {
+            display: inline-block;
+            text-decoration: none;
+            color: #000;
+            height: 1.5em;
+            padding-top: .25em;
+            border: 1px solid #000;
+            background-color: #ddd;
+            margin: .5em .125em;
+            text-align: center;
+            transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
+            box-shadow:2px 2px 2px #0008;
+            border-radius: 2em;
+            width: 1.8em;
+        }
+
+        .numButton:hover {
+            background-color: #fff;
+            transform: scale(1.2);
+        }
+        #numbers {
+            width: 22em;
+            text-align: center;
+            border: .5em solid #000;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 1em;
+            background-color: #666;
+            box-shadow: 0 .5em .5em #0008;
+        }
+
+        #board {
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse: collapse;
+            background-color: #333;
+            border: 1em solid #000;
+            box-shadow: 0 .5em .5em #0006;
+            border-radius: 1em;
+        }
+
+        #board td {
+            width: 2em;
+            height: 2em;
+            border: 1px solid #333;
+            background-color: #eee;
+            color: #333;
+            text-align: center;
+            transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
+        }
+        
+        #board td.oem {
+            color:#555;
+        }
+        #board tr td:nth-child(3n) {
+            border-right: 5px solid #000;
+        }
+
+        #board tr:nth-child(3n) {
+            border-bottom: 5px solid #000;
+        }
+
+        a.selected {
+            background-color: #4ba130;
+            color: #eee;
+            font-weight: bold;
+            transform: scale(1.2);
+            border:1px solid #fff;
+            box-shadow:3px 3px 3px #0008;
+            transform:translateY(-2px);
+        }
+
+        a.selected:hover {
+            background-color: #7bd160;
+            color: #fff;
+        }
+
+        h1 {
+            font-family: "Cooper Std";
+            text-align: center;
+            text-transform: uppercase;
+            text-shadow: 4px 4px 1px #000c;
+            margin-bottom: 0px;
+        }
+
+        #buttons button:active {
+            background: linear-gradient(to bottom, rgba(209, 210, 211, 1) 0%, rgba(207, 212, 214, 1) 50%, rgba(183, 186, 191, 1) 51%, rgba(224, 225, 226, 1) 100%);
+            box-shadow: -2px -2px 0px;
+            border-style: inset;
+            top: -0.5em;
+        }
+
+        #toolbar {
+            text-align: center;
+            margin: .5em auto 0 auto;
+            width: 21em;
+            background-color: #bbb;
+            padding: .5em .5em;
+            border: .5em solid #000;
+            height: 1.5em;
+        }
+
+        #toolbar label {
+            color: #222;
+        }
+
+        #buttons {
+            float: right;
+        }
+
+        .locked {
+            font-weight: bold;
+        }
+
+        table#board tr td.selcell {
+            background-color: #fff;
+            color: #000;
+            font-weight: normal;
+        }
+
+        table#board tr td.selcell span.num {
+            border: 1px solid #4ba130;
+            border-radius: 2em;
+            width: 1.25em;
+            display: inline-block;
+            transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
+        }
+
+        table#board tr td.good {
+            color: #000000;
+            background-color: #ffffff;
+        }
+        table#board tr td.good span.num {
+            background-color:#fff;
+        }
+        span.num { background-color:#fff; }
+        table#board tr td.bad {
+            color: #fff;
+            background-color: #aa0000;
+        }
+
+        table#board tr td.bad span.num {
+            background-color:transparent;
+            border: 0px;
+        }
+
+        #buttons button {
+            width: 3.6em;
+            height: 3.5em;
+            border-radius: 4em;
+            position: relative;
+            top: -.6em;
+            border: 2px outset #fffc;
+            box-shadow: 2px 2px 2px #0009;
+            text-shadow: -1px -1px 0px #fff;
+            background: linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
+            transition: all 100ms;
+        }
+
+        label[for=score]:after {
+            content: ":";
+        }
+
+        #score {
+            color: #0c0;
+            background-color: #000;
+            padding: 4px 8px;
+            border: 2px inset #fff;
+        }
+
+        table#board tr td span.solved {
+            color: #900;
+        }
+
+        #scoreWrap {
+            display: inline-block;
+            margin-right: .5em;
+        }
+        .disabled {
+            background-color:#999;
+            color:#666;
+            border-color:#666;
+            box-shadow:0px 0px 0px #000;
+        }
+        .num {
+            width: 1.25em;
+            display: inline-block;
+            border: 0px solid #0c0;
+            border-radius: 2em;
+            transition: scale 2000ms cubic-bezier(.47, 1.64, .41, .8);
+            transform: scale(1.5);
+        }
+
+        :focus {
+            outline: 0px;
+        }
+        .bounce {
+            animation:2s bounce;
+        }
+        @keyframes bounce {
+            0% {
+                transform: scale(1.5);
+            }
+            20% {
+                transform: scale(2.5);
+            }
+            40% {
+                transform: scale(1);
+            }
+            60% {
+                transform: scale(2.5);
+            }
+            80% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.5);
+            }
+        }
+        @keyframes pop {
+            0% {
+                transform: scale(0);
+            }
+            33% {
+                transform: scale(2);
+            }
+            66% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.5);
+            }
+        }
+    </style>
+    <script src='sudoku.js' async></script>
+</head>
+
+<body id="home">
+    <main>
+        <h1>Wordoku</h1>
+        <div id='toolbar'>
+            <div id='scoreWrap'>
+                <label for='score'>Score</label>
+                <span id='score'>00000</span>
+            </div>
+            <label for='difficulty'>Level</label>
+            <select id='difficulty'>
+                <option value="easy">Beginner</option>
+                <option value="medium">Easy</option>
+                <option value="hard">Average</option>
+                <option value="very-hard" SELECTED>Difficult</option>
+                <option value="insane">Insane</option>
+                <option value="inhuman">Robots</option>
+                <option value="import">Import...</option>
+            </select>
+            <div id='buttons'>
+                <button id='newGame'>New</button>
+                <button id='solveGame'>Solve</button>
+            </div>
+        </div>
+        <div id='sudoku-board'></div>
+        <div id='numbers'>
+            <a href="#1" id='num_1' class='numButton'>1</a>
+            <a href="#2" id='num_2' class='numButton'>2</a>
+            <a href="#3" id='num_3' class='numButton'>3</a>
+            <a href="#4" id='num_4' class='numButton'>4</a>
+            <a href="#5" id='num_5' class='numButton'>5</a>
+            <a href="#6" id='num_6' class='numButton'>6</a>
+            <a href="#7" id='num_7' class='numButton'>7</a>
+            <a href="#8" id='num_8' class='numButton'>8</a>
+            <a href="#9" id='num_9' class='numButton'>9</a>
+        </div>
+    </main>
+    <script>
+        function $(str) {
+            return document.querySelector(str);
+        }
+
+        function $$(str) {
+            return document.querySelectorAll(str);
+        }
+        (function() {
+            const app = {
+                init: function() {
+                    app.genBoard();
+                    $("#board").addEventListener("click", function(e) {
+                        console.log("Board click");
+                        console.dir(e);
+                        app.handleClick(e);
+                    });
+                    $("#numbers").addEventListener("click", function(e) {
+                        console.dir(e);
+                        if (e.target.nodeName === "A") {
+                            if (e.target.classList.contains("disabled")) {
+                                return false;
+                            }
+                            if (app.state.selected) {
+                                app.state.selected.classList.remove("selected");
+                            }
+
+                            e.target.classList.add("selected");
+                            app.state.currentNumber = e.target.id.replace(/^num_/, '');
+                            app.state.selected = e.target;
+                            app.selectCells(app.state.currentNumber);
+                        }
+                    });
+                    $("#newGame").addEventListener("click", function(e) {
+                        console.dir(e);
+                        app.state.puzzleStr = sudoku.generate($("#difficulty").options[$("#difficulty").selectedIndex].value);
+                        app.state.puzzle = app.state.puzzleStr.split("");
+
+                        app.state.solutionStr = sudoku.solve(app.state.puzzle);
+                        app.state.solution = app.state.solutionStr.split("");
+                        app.state.score = 0;
+                        app.updateScore();
+                        $("#score").innerHTML = "00000";
+
+                        app.state.wordStr = app.state.words[Math.floor(Math.random() * app.state.words.length)].toUpperCase();
+                        app.state.word = app.scrambleWord(app.state.wordStr.split(""));
+                        
+                        for (let i=0; i<app.state.word.length; i++) {
+                            $("#num_"+(i+1)).innerHTML = app.state.word[i];                            
+                        }
+                        console.log("New puzzle: "+app.state.puzzleStr);
+                        sudoku.print_board(app.state.puzzleStr);
+
+                        app.fillTable(app.state.puzzle);
+                        app.checkCompleted();
+                    });
+                    $("#solveGame").addEventListener("click", function(e) {
+                        app.solve();
+                    });
+                    fetch("9plus.json").then(function(response) { return response.json(); }).then(function(data) {
+                        app.state.words = data;
+                        console.log("Got words");
+                        console.dir(data);
+                    });
+                },
+                scrambleWord: function(arr) {
+                    let currentIndex = arr.length, temporaryValue, randomIndex;
+
+                      // While there remain elements to shuffle...
+                      while (0 !== currentIndex) {
+
+                              // Pick a remaining element...
+                              randomIndex = Math.floor(Math.random() * currentIndex);
+                              currentIndex -= 1;
+
+                              // And swap it with the current element.
+                              temporaryValue = arr[currentIndex];
+                              arr[currentIndex] = arr[randomIndex];
+                              arr[randomIndex] = temporaryValue;
+                            }
+
+                      return arr;
+                },
+                solve: function() {
+                    let slofill = [];
+                    for (var i = 0; i < app.state.solution.length; i++) {
+                        if (app.state.puzzle[i] != app.state.solution[i]) {
+                            slofill.push({
+                                "id": "#slot_" + i,
+                                "content": "<span class='num solved'>" + app.state.solution[i] + "</span>"
+                            });
+                        }
+                    }
+                    app.state.slowFill = slofill;
+                    app.slowFill();
+                },
+                slowFill: function(delay) {
+                    if (!delay) delay = 10;
+                    if (app.state.slowFill.length) {
+                        const item = app.state.slowFill.shift();
+                        $(item.id).innerHTML = item.content;
+                        $(item.id + " span.num").style.transform = "scale(0)";
+                        setTimeout(function() {
+                            $(item.id + " span.num").style.transform = "scale(1.5)";
+                        }, delay);
+
+                        setTimeout(function(delay) {
+                            app.slowFill(delay);
+                        }, delay);
+                    }
+                },
+                scale: function(who) {
+                    console.log("scaling "+who.id);
+                    who.classList.add("pop");
+                    who.style.transform = "scale(1.5)";
+                },
+                handleClick: function(e) {
+                    let tgt = e.target;
+                    if (tgt.nodeName === "SPAN") {
+                        tgt = tgt.offsetParent;
+                    }
+                    if (tgt.nodeName === "TD") {
+                        if (app.state.currentNumber) {
+                            let newel = document.createElement("span");
+                            newel.classList.add("num");
+                            newel.innerText = app.state.word[app.state.currentNumber-1];
+                            newel.style.transform = "scale(0)";
+                            
+                            tgt.appendChild(newel);
+                            setTimeout(function() { app.scale(newel); }, 100);
+
+                            // tgt.innerHTML = "<span class='num pop'>" + app.state.word[app.state.currentNumber-1] + "</span>";
+                            tgt.classList.add("selcell");
+                            const cellID = tgt.id.replace(/^slot_/, '');
+                            console.log("CellID: " + cellID);
+
+                            if (app.state.puzzle[cellID] == app.state.currentNumber) {
+                                app.state.puzzle[cellID] = ".";
+                                tgt.classList.remove("good");
+                                tgt.classList.remove("bad");
+                                tgt.classList.remove("selcell");
+                                tgt.innerHTML = "";
+                            } else {
+                                app.state.puzzle[cellID] = app.state.currentNumber;
+
+                                if (app.state.solution[cellID] == app.state.currentNumber) {
+                                    tgt.classList.remove('bad');
+                                    tgt.classList.add('good');
+                                    app.updateScore(35);
+                                } else {
+                                    tgt.classList.remove('good');
+                                    tgt.classList.add('bad');
+                                    app.updateScore(-500);
+                                    if (app.state.score < 0) {
+                                        app.state.score = 0;
+                                    }
+                                }
+
+                                console.log("Old Puzzle: " + app.state.puzzleStr);
+                                console.log("New Puzzle: " + app.state.puzzle.join(""));
+                            }
+                            app.state.puzzleStr = app.state.puzzle.join("");
+                            app.checkCompleted();
+                        }
+                    }
+
+                },
+                selectCells: function(num) {
+                    const sel = $$(".selcell");
+
+                    sel.forEach(function(item) {
+                        item.classList.remove("selcell");
+                    });
+
+                    for (let i = 0; i < app.state.puzzle.length; i++) {
+                        if (app.state.puzzle[i] == num) {
+                            $("#slot_" + i).classList.add("selcell");
+                        }
+                    }
+                },
+                fillTable: function(items) {
+                    console.dir(items);
+                    for (var i = 0; i < items.length; i++) {
+                        let slot = $("#slot_" + i);
+
+                        if (slot) {
+                            slot.innerHTML = "";
+                            slot.classList.remove("locked", "oem");
+                            if (items[i] != ".") {
+                                app.state.slowFill.push({
+                                    "id": "#slot_" + i,
+                                    "content": "<span class='num'>" + app.state.word[items[i]-1] + "</span>"
+                                });
+                                slot.classList.add("oem");
+                            }
+                        }
+                    }
+                    app.slowFill(1);
+                },
+                lockNumber: function(num) {
+                    for (var i=0; i<app.state.puzzle.length; i++) {
+                        if (app.state.puzzle[i] == num) {
+                            $("#slot_"+i).classList.add("locked");
+                            const numspan = $("#slot_"+i+" span.num");
+                            if (numspan) numspan.classList.add("bounce");
+                        }
+                    }
+                },
+                checkNumbers: function() {
+                    const out = {};
+
+                    for (var i = 0; i < app.state.puzzle.length; i++) {
+                        if (app.state.puzzle[i] != ".") {
+                            if (!out[app.state.puzzle[i]]) out[app.state.puzzle[i]] = 0;
+                            out[app.state.puzzle[i]]++;
+
+                            if (out[app.state.puzzle[i]] == 9) {
+                                console.log("Completed number!! " + app.state.puzzle[i]);
+                                if (!$("#num_"+app.state.puzzle[i]).classList.contains("disabled")) {
+                                    $("#num_"+app.state.puzzle[i]).classList.add("disabled");
+                                    app.lockNumber(app.state.puzzle[i]);
+                                }
+                            }
+                        }
+                    }
+                },
+                checkCol: function(col) {
+                    for (var i = col; i < 81; i += 9) {
+                        if (app.state.puzzle[i] == '.') {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                checkRow: function(row) {
+                    for (var i = row; i < row + 9; i++) {
+                        if (app.state.puzzle[i] == '.') {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                checkSquare: function(square) {
+                    for (var x = 0; x < app.config.squares[square].length; x++) {
+                        if (app.state.puzzle[app.config.squares[square][x]] == '.') {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                checkSquares: function() {
+                    for (var i = 0; i < app.config.squares.length; i++) {
+                        if (app.checkSquare(i)) {
+                            if (!$("#slot_" + app.config.squares[i][0]).classList.contains("locked")) {
+                                for (var x = 0; x < app.config.squares[i].length; x++) {
+                                    $("#slot_" + app.config.squares[i][x]).classList.add("locked");
+                                }
+                                app.updateScore(600);
+                            }
+                        }
+                    }
+                    return true;
+                },
+                checkCompleted: function() {
+                    // Check rows and columns for completion
+                    for (var r = 0; r < 81; r += 9) {
+                        if (app.checkRow(r)) {
+                            if (!$("#slot_" + r).classList.contains('locked')) {
+                                for (var c = 0; c < 9; c++) {
+                                    $("#slot_" + (r + c)).classList.add('locked');
+                                }
+                                app.updateScore(600);
+                            }
+                        }
+                    }
+
+                    for (var c = 0; c < 9; c++) {
+                        if (app.checkCol(c)) {
+                            if (!$("#slot_" + c).classList.contains('locked')) {
+                                for (var r = c; r < 81; r += 9) {
+                                    $("#slot_" + r).classList.add('locked');
+                                }
+                                app.updateScore(600);
+                            }
+                        }
+                    }
+                    app.checkSquares();
+                    app.checkNumbers();
+                },
+                state: {
+                    currentNumber: null,
+                    selected: null,
+                    puzzle: '',
+                    score: 0,
+                    slowFill: []
+                },
+                config: {
+                    squares: [
+                        [0, 1, 2, 9, 10, 11, 18, 19, 20],
+                        [3, 4, 5, 12, 13, 14, 21, 22, 23],
+                        [6, 7, 8, 15, 16, 17, 24, 25, 26],
+                        [27, 28, 29, 36, 37, 38, 45, 46, 47],
+                        [30, 31, 32, 39, 40, 41, 48, 49, 50],
+                        [33, 34, 35, 42, 43, 44, 51, 52, 53],
+                        [54, 55, 56, 63, 64, 65, 72, 73, 74],
+                        [57, 58, 59, 66, 67, 68, 75, 76, 77],
+                        [60, 61, 62, 69, 70, 71, 78, 79, 80]
+                    ]
+                },
+                updateScore: function(scr) {
+                    if (scr) app.state.score += scr;
+                    if (app.state.score < 0) app.state.score = 0;
+                    let showScore = app.state.score.toString().padStart(5, "0");
+                    $("#score").innerHTML = showScore;
+                },
+                genBoard: function() {
+                    let cnt = 0;
+                    let out = "<table id='board'>";
+
+                    for (let r = 0; r < 9; r++) {
+                        out += "<tr>";
+                        for (let c = 0; c < 9; c++) {
+                            out += "<td id='slot_" + cnt + "'></td>";
+                            cnt++;
+                        }
+                        out += "</tr>";
+                    }
+                    out += "</table>";
+                    $("#sudoku-board").innerHTML = out;
+                }
+            }
+            window.app = app;
+            app.init();
+        })();
+    </script>
+</body>
+
+</html>
