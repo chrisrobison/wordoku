@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <title></title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nova+Flat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -25,7 +28,7 @@
             margin: .5em .125em;
             text-align: center;
             transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
-            box-shadow:2px 2px 2px #0008;
+            box-shadow: 2px 2px 2px #0008;
             border-radius: 2em;
             width: 1.8em;
         }
@@ -34,6 +37,7 @@
             background-color: #fff;
             transform: scale(1.2);
         }
+
         #numbers {
             width: 22em;
             text-align: center;
@@ -64,10 +68,11 @@
             text-align: center;
             transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
         }
-        
+
         #board td.oem {
-            color:#555;
+            color: #555;
         }
+
         #board tr td:nth-child(3n) {
             border-right: 5px solid #000;
         }
@@ -81,9 +86,9 @@
             color: #eee;
             font-weight: bold;
             transform: scale(1.2);
-            border:1px solid #fff;
-            box-shadow:3px 3px 3px #0008;
-            transform:translateY(-2px);
+            border: 1px solid #fff;
+            box-shadow: 3px 3px 3px #0008;
+            transform: translateY(-2px);
         }
 
         a.selected:hover {
@@ -146,17 +151,22 @@
             color: #000000;
             background-color: #ffffff;
         }
+
         table#board tr td.good span.num {
-            background-color:#fff;
+            background-color: #fff;
         }
-        span.num { background-color:#fff; }
+
+        span.num {
+            background-color: #fff;
+        }
+
         table#board tr td.bad {
             color: #fff;
             background-color: #aa0000;
         }
 
         table#board tr td.bad span.num {
-            background-color:transparent;
+            background-color: transparent;
             border: 0px;
         }
 
@@ -173,11 +183,9 @@
             transition: all 100ms;
         }
 
-        label[for=score]:after {
-            content: ":";
-        }
-
+        #time,
         #score {
+            font-family: "Cute Font", cursive;
             color: #0c0;
             background-color: #000;
             padding: 4px 8px;
@@ -188,16 +196,20 @@
             color: #900;
         }
 
+        #timeWrap,
         #scoreWrap {
             display: inline-block;
             margin-right: .5em;
+            float: left;
         }
+
         .disabled {
-            background-color:#999;
-            color:#666;
-            border-color:#666;
-            box-shadow:0px 0px 0px #000;
+            background-color: #999;
+            color: #666;
+            border-color: #666;
+            box-shadow: 0px 0px 0px #000;
         }
+
         .num {
             width: 1.25em;
             display: inline-block;
@@ -210,42 +222,86 @@
         :focus {
             outline: 0px;
         }
+
         .bounce {
-            animation:2s bounce;
+            animation: 2s bounce;
         }
+
         @keyframes bounce {
             0% {
                 transform: scale(1.5);
             }
+
             20% {
                 transform: scale(2.5);
             }
+
             40% {
                 transform: scale(1);
             }
+
             60% {
                 transform: scale(2.5);
             }
+
             80% {
                 transform: scale(1);
             }
+
             100% {
                 transform: scale(1.5);
             }
         }
+
         @keyframes pop {
             0% {
                 transform: scale(0);
             }
+
             33% {
                 transform: scale(2);
             }
+
             66% {
                 transform: scale(1);
             }
+
             100% {
                 transform: scale(1.5);
             }
+        }
+
+        #timeLabel {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            background-image: url("stopwatch.svg");
+            background-size: 1rem 1rem;
+            background-repeat: no-repeat;
+        }
+
+        #scoreLabel {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            background-image: url("score.svg");
+            background-size: 1rem 1rem;
+            background-repeat: no-repeat;
+        }
+
+        .points {
+            position: absolute;
+            font-size: 1.5em;
+            height: 1em;
+            width: 5em;
+            color: #009900;
+            transition: all 3s linear;
+            transform: scale(1);
+        }
+
+        .fade {
+            transform: scale(5);
+            opacity: 0;
         }
     </style>
     <script src='sudoku.js' async></script>
@@ -256,9 +312,14 @@
         <h1>Wordoku</h1>
         <div id='toolbar'>
             <div id='scoreWrap'>
-                <label for='score'>Score</label>
+                <label id='scoreLabel' for='score'></label>
                 <span id='score'>00000</span>
             </div>
+            <div id='timeWrap'>
+                <label id='timeLabel' for='time'></label>
+                <span id='time'>00:00</span>
+            </div>
+
             <label for='difficulty'>Level</label>
             <select id='difficulty'>
                 <option value="easy">Beginner</option>
@@ -302,6 +363,7 @@
                     $("#board").addEventListener("click", function(e) {
                         console.log("Board click");
                         console.dir(e);
+                        app.state.lastClick = e;
                         app.handleClick(e);
                     });
                     $("#numbers").addEventListener("click", function(e) {
@@ -333,42 +395,47 @@
 
                         app.state.wordStr = app.state.words[Math.floor(Math.random() * app.state.words.length)].toUpperCase();
                         app.state.word = app.scrambleWord(app.state.wordStr.split(""));
-                        
-                        for (let i=0; i<app.state.word.length; i++) {
-                            $("#num_"+(i+1)).innerHTML = app.state.word[i];                            
+
+                        for (let i = 0; i < app.state.word.length; i++) {
+                            $("#num_" + (i + 1)).innerHTML = app.state.word[i];
                         }
-                        console.log("New puzzle: "+app.state.puzzleStr);
+                        console.log("New puzzle: " + app.state.puzzleStr);
                         sudoku.print_board(app.state.puzzleStr);
 
                         app.fillTable(app.state.puzzle);
                         app.checkCompleted();
+                        app.state.time = 0;
+                        app.updateTime();
                     });
                     $("#solveGame").addEventListener("click", function(e) {
                         app.solve();
                     });
-                    fetch("9plus.json").then(function(response) { return response.json(); }).then(function(data) {
+                    fetch("9plus.json").then(function(response) {
+                        return response.json();
+                    }).then(function(data) {
                         app.state.words = data;
                         console.log("Got words");
                         console.dir(data);
                     });
                 },
                 scrambleWord: function(arr) {
-                    let currentIndex = arr.length, temporaryValue, randomIndex;
+                    let currentIndex = arr.length,
+                        temporaryValue, randomIndex;
 
-                      // While there remain elements to shuffle...
-                      while (0 !== currentIndex) {
+                    // While there remain elements to shuffle...
+                    while (0 !== currentIndex) {
 
-                              // Pick a remaining element...
-                              randomIndex = Math.floor(Math.random() * currentIndex);
-                              currentIndex -= 1;
+                        // Pick a remaining element...
+                        randomIndex = Math.floor(Math.random() * currentIndex);
+                        currentIndex -= 1;
 
-                              // And swap it with the current element.
-                              temporaryValue = arr[currentIndex];
-                              arr[currentIndex] = arr[randomIndex];
-                              arr[randomIndex] = temporaryValue;
-                            }
+                        // And swap it with the current element.
+                        temporaryValue = arr[currentIndex];
+                        arr[currentIndex] = arr[randomIndex];
+                        arr[randomIndex] = temporaryValue;
+                    }
 
-                      return arr;
+                    return arr;
                 },
                 solve: function() {
                     let slofill = [];
@@ -399,7 +466,7 @@
                     }
                 },
                 scale: function(who) {
-                    console.log("scaling "+who.id);
+                    console.log("scaling " + who.id);
                     who.classList.add("pop");
                     who.style.transform = "scale(1.5)";
                 },
@@ -412,11 +479,13 @@
                         if (app.state.currentNumber) {
                             let newel = document.createElement("span");
                             newel.classList.add("num");
-                            newel.innerText = app.state.word[app.state.currentNumber-1];
+                            newel.innerText = app.state.word[app.state.currentNumber - 1];
                             newel.style.transform = "scale(0)";
-                            
+
                             tgt.appendChild(newel);
-                            setTimeout(function() { app.scale(newel); }, 100);
+                            setTimeout(function() {
+                                app.scale(newel);
+                            }, 100);
 
                             // tgt.innerHTML = "<span class='num pop'>" + app.state.word[app.state.currentNumber-1] + "</span>";
                             tgt.classList.add("selcell");
@@ -478,7 +547,7 @@
                             if (items[i] != ".") {
                                 app.state.slowFill.push({
                                     "id": "#slot_" + i,
-                                    "content": "<span class='num'>" + app.state.word[items[i]-1] + "</span>"
+                                    "content": "<span class='num'>" + app.state.word[items[i] - 1] + "</span>"
                                 });
                                 slot.classList.add("oem");
                             }
@@ -487,10 +556,10 @@
                     app.slowFill(1);
                 },
                 lockNumber: function(num) {
-                    for (var i=0; i<app.state.puzzle.length; i++) {
+                    for (var i = 0; i < app.state.puzzle.length; i++) {
                         if (app.state.puzzle[i] == num) {
-                            $("#slot_"+i).classList.add("locked");
-                            const numspan = $("#slot_"+i+" span.num");
+                            $("#slot_" + i).classList.add("locked");
+                            const numspan = $("#slot_" + i + " span.num");
                             if (numspan) numspan.classList.add("bounce");
                         }
                     }
@@ -501,13 +570,15 @@
                     for (var i = 0; i < app.state.puzzle.length; i++) {
                         if (app.state.puzzle[i] != ".") {
                             if (!out[app.state.puzzle[i]]) out[app.state.puzzle[i]] = 0;
-                            out[app.state.puzzle[i]]++;
-
+                            if (app.state.solution[i] == app.state.puzzle[i]) {
+                                out[app.state.puzzle[i]]++;
+                            }
                             if (out[app.state.puzzle[i]] == 9) {
                                 console.log("Completed number!! " + app.state.puzzle[i]);
-                                if (!$("#num_"+app.state.puzzle[i]).classList.contains("disabled")) {
-                                    $("#num_"+app.state.puzzle[i]).classList.add("disabled");
+                                if (!$("#num_" + app.state.puzzle[i]).classList.contains("disabled")) {
+                                    $("#num_" + app.state.puzzle[i]).classList.add("disabled");
                                     app.lockNumber(app.state.puzzle[i]);
+                                    app.updateScore(600);
                                 }
                             }
                         }
@@ -581,6 +652,7 @@
                     selected: null,
                     puzzle: '',
                     score: 0,
+                    time: 0,
                     slowFill: []
                 },
                 config: {
@@ -601,6 +673,19 @@
                     if (app.state.score < 0) app.state.score = 0;
                     let showScore = app.state.score.toString().padStart(5, "0");
                     $("#score").innerHTML = showScore;
+
+                    let points = document.createElement("div");
+                    points.classList.add('points');
+                    points.innerHTML = '+' + scr;
+
+
+                    if (app.state.lastClick) {
+                        points.style.top = app.state.lastClick.pageY + 'px';
+                        points.style.left = app.state.lastClick.pageX + 'px';
+                    }
+                    setTimeout(function() {
+                        points.classList.add('fade');
+                    }, 100);
                 },
                 genBoard: function() {
                     let cnt = 0;
@@ -616,7 +701,17 @@
                     }
                     out += "</table>";
                     $("#sudoku-board").innerHTML = out;
+                },
+                updateTime: function() {
+                    app.state.time++;
+                    let min = Math.floor(app.state.time / 60);
+                    let sec = app.state.time % 60;
+                    let out = min.toString().padStart(2, '0') + ':' + sec.toString().padStart(2,'0');
+
+                    $("#time").innerHTML = out;
+                    setTimeout(function() { app.updateTime(); }, 1000);
                 }
+
             }
             window.app = app;
             app.init();

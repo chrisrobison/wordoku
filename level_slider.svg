@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   height="300"
+   width="150"
+   id="svg1502"
+   version="1.1"
+   image-rendering="auto"
+   stroke-dashoffset="0"
+   font-size="12"
+   stroke-linejoin="miter"
+   font-style="normal"
+   font-family="'Dialog'"
+   stroke-width="1"
+   font-weight="normal"
+   stroke-dasharray="none"
+   fill="black"
+   stroke-opacity="1"
+   shape-rendering="auto"
+   stroke-miterlimit="10"
+   stroke-linecap="square"
+   stroke="black"
+   text-rendering="auto"
+   color-interpolation="auto"
+   color-rendering="auto"
+   fill-opacity="1">
+  <metadata
+     id="metadata1506">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <!--Unicode Character 'LEVEL SLIDER' (U+1F39A)-->
+  <defs
+     id="genericDefs" />
+  <g
+     transform="translate(-20.412371,-129.8969)"
+     id="g1500">
+    <g
+       id="g1498">
+      <path
+         id="path1496"
+         stroke="none"
+         d="m 161.5781,406.4062 q 0,4.7813 -3.375,8.1563 -3.375,3.375 -8.1562,3.375 H 43.5938 q -4.7813,0 -8.1563,-3.375 -3.375,-3.375 -3.375,-8.1563 V 153.1406 q 0,-4.7812 3.375,-8.1562 3.375,-3.375 8.1563,-3.375 h 106.4531 q 4.7812,0 8.1562,3.375 3.375,3.375 3.375,8.1562 z m -7.0312,0 V 153.1406 q 0,-4.5 -4.5,-4.5 H 43.5938 q -4.5,0 -4.5,4.5 v 253.2656 q 0,4.5 4.5,4.5 h 106.4531 q 4.5,0 4.5,-4.5 z M 123.4688,255.5156 H 103.5 V 369.5625 H 88.3125 V 255.5156 h -21.375 v -23.9062 h 21.375 V 184.9219 H 103.5 v 46.6875 h 19.9688 z m -5.625,-11.9531 v -8.1563 H 70.7344 v 8.1563 z" />
+    </g>
+  </g>
+</svg>
