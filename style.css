@@ -18,16 +18,25 @@ body {
     margin: .5em .125em;
     text-align: center;
     transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
-    box-shadow: 2px 2px 2px #0008;
+    box-shadow: 1px 1px 1px #0008;
     border-radius: 2em;
     width: 1.8em;
 }
 
 .numButton:hover {
-    background-color: #fff;
+    background-color: #eee;
+    box-shadow: 3px 3px 3px #0009;
     transform: scale(1.2);
 }
-
+.numButton.disabled:hover {
+    box-shadow: 0px 0px 0px #0000;
+    transform:scale(1);
+    background-color:#999;
+}
+a.numButton.selected:hover {
+    transform: scale(1.4) translateY(-3px);
+    background-color:#0060a1;
+}
 #numbers {
     width: 22em;
     text-align: center;
@@ -43,7 +52,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     border-collapse: collapse;
-    background-color: #333;
+    background-color: #eee;
     border: 1em solid #000;
     box-shadow: 0 .5em .5em #0006;
     border-radius: 1em;
@@ -52,8 +61,7 @@ body {
 #board td {
     width: 2em;
     height: 2em;
-    border: 1px solid #333;
-    background-color: #eee;
+    border: 1px solid #666;
     color: #333;
     text-align: center;
     transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
@@ -73,17 +81,16 @@ body {
 }
 
 a.selected {
-    background-color: #4ba130;
+    background-color: #0060a1;
     color: #eee;
     font-weight: bold;
-    transform: scale(1.2);
     border: 1px solid #fff;
     box-shadow: 3px 3px 3px #0008;
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.3);
 }
 
 a.selected:hover {
-    background-color: #7bd160;
+    background-color: #7b60a1;
     color: #fff;
 }
 
@@ -93,6 +100,22 @@ h1 {
     text-transform: uppercase;
     text-shadow: 4px 4px 1px #000c;
     margin-bottom: 0px;
+}
+#buttons button#solveGame {
+    background: url("light.png");
+    background: url("light.png"), linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
+    background-size:100% 100%;
+    background-repeat: no-repeat;
+}
+#buttons button#newGame {
+    background: linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
+    background-repeat: no-repeat;
+    font-size:20px;
+    padding:0px;
+    width:2em;
+    height:2em;
+    position:relative;
+    top:-0.4em;
 }
 
 #buttons button:active {
@@ -118,6 +141,8 @@ h1 {
 
 #buttons {
     float: right;
+    position:relative;
+    top:-4px;
 }
 
 .locked {
@@ -125,7 +150,7 @@ h1 {
 }
 
 table#board tr td.selcell {
-    background-color: #fff;
+    background-color: #0f0;
     color: #000;
     font-weight: normal;
 }
@@ -135,12 +160,16 @@ table#board tr td.selcell span.num {
     border-radius: 2em;
     width: 1.25em;
     display: inline-block;
-    transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
+    transition: all 200ms cubic-bezier(.47, 1.64, .41, .8);
+    /* transform:scale(0); */
+    font-size:32px;
+    position:relative;
+    background-color:#fff;
 }
 
-table#board tr td.good {
+.good {
     color: #000000;
-    background-color: #ffffff;
+    background-color: transparent;
 }
 
 table#board tr td.good span.num {
@@ -162,16 +191,15 @@ table#board tr td.bad span.num {
 }
 
 #buttons button {
-    width: 3.6em;
-    height: 3.5em;
+    width: 3em;
+    height: 3em;
     border-radius: 4em;
-    position: relative;
-    top: -.6em;
     border: 2px outset #fffc;
     box-shadow: 2px 2px 2px #0009;
     text-shadow: -1px -1px 0px #fff;
     background: linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
     transition: all 100ms;
+    padding:.25em .3em;
 }
 
 #time,
@@ -200,6 +228,8 @@ table#board tr td span.solved {
     border-color: #666;
     box-shadow: 0px 0px 0px #000;
     cursor:not-allowed;
+    filter:grayscale(100%) brightness(0.5);
+
 }
 
 .num {
@@ -207,8 +237,9 @@ table#board tr td span.solved {
     display: inline-block;
     border: 0px solid #0c0;
     border-radius: 2em;
-    transition: scale 2000ms cubic-bezier(.47, 1.64, .41, .8);
-    transform: scale(1.5);
+    transition: transform 200ms cubic-bezier(.47, 1.64, .41, .8);
+    transform: scale(0);
+    font-size:32px;
 }
 
 :focus {
@@ -241,11 +272,21 @@ table#board tr td span.solved {
     }
 
     100% {
-        transform: scale(1.5);
+        transform: scale(1);
     }
 }
+table#board tr td.selcell span.num.toreveal { 
+    transform:scale(0);
+}
+table#board tr td span.num.reveal { 
+    transform:scale(1);
+}
 .pop {
-    animation: pop 2000ms cubic-bezier(.47, 1.64, .41, .8);
+    animation: pop 1000ms cubic-bezier(.47, 1.64, .41, .8);
+}
+
+table#board tr td.selcell span.num.show { 
+    transform: scale(1.5);
 }
 @keyframes pop {
     0% {
@@ -267,20 +308,24 @@ table#board tr td span.solved {
 
 #timeLabel {
     display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    background-image: url("stopwatch.svg");
-    background-size: 1rem 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url("stopwatch.png");
+    background-size: contain;
     background-repeat: no-repeat;
+    position:relative;
+    top:5px;
 }
 
 #scoreLabel {
     display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    background-image: url("score.svg");
-    background-size: 1rem 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url("score2.png");
+    background-size: contain;
     background-repeat: no-repeat;
+    position:relative;
+    top:6px;
 }
 
 .points {
@@ -321,3 +366,19 @@ table#board tr td span.solved {
     position:relative;
 }
 main { text-align: center; }
+.dark { background-color:#bbb; }
+input[type=text] { text-align:center; text-transform:uppercase; font-weight:bold;}
+.fly {
+    position:absolute;
+    transition: all 200ms linear;
+    width:2em;
+    height:1.6em;
+    background-color:#ff0;
+    color:#000;
+    border-radius:50%;
+    font-size:32px;
+    font-weight:bold;
+    padding-top:.4em;
+    text-shadow: -1px -1px 0px #fff, 1px 1px 0px #fff;
+    border: 2px solid #00f;
+}

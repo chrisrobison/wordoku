@@ -24,11 +24,18 @@ function $$(str) {
                     if (app.state.selected) {
                         app.state.selected.classList.remove("selected");
                     }
-
-                    e.target.classList.add("selected");
-                    app.state.currentNumber = e.target.id.replace(/^num_/, '');
-                    app.state.selected = e.target;
-                    app.selectCells(app.state.currentNumber);
+                    
+                    if (app.state.selected === e.target) {
+                        app.deselectCells();
+                        e.target.classList.remove("selected");
+                        app.state.currentNumber = 0;
+                        app.state.selected = '';
+                    } else {
+                        e.target.classList.add("selected");
+                        app.state.currentNumber = e.target.id.replace(/^num_/, '');
+                        app.state.selected = e.target;
+                        app.selectCells(app.state.currentNumber);
+                    }
                 }
             });
             $("#newGame").addEventListener("click", function(e) {
@@ -38,45 +45,17 @@ function $$(str) {
                 console.log("Attempting to find a good sudoku puzzle...");
                 
                 gameStr = sudoku.generate(app.state.difficulty);
-                /* 
-                while (!gameStr && (count < limit+1)) {
-                    gameStr = sudoku.generate(app.state.difficulty);
-                    
-                    if (count < limit) {
-                        sudoku.print_board(gameStr);
-                        for (var i=0; i<9; i++) {
-                            if (app.checkCol(i)) {
-                                if (gameStr) sudoku.print_board(gameStr);
-                                i = 9;
-                                console.log("Discarded puzzle: completed columns");
-                                gameStr = '';
-                            } else if (app.checkRow(i*9)) {
-                                if (gameStr) sudoku.print_board(gameStr);
-                                i = 9;
-                                console.log("Discarded puzzle: completed rows");
-                                gameStr = '';
-                            } else if (app.checkSquare(i)) {
-                                if (gameStr) sudoku.print_board(gameStr);
-                                i = 9;
-                                console.log("Discarded puzzle: completed square");
-                                gameStr = '';
-                            }
-                        }
-                        count++;
-                    } else {
-                        console.log("Giving up");
-                    }
-                }
-                */
+                
                 app.state.puzzleStr = gameStr;
-                //app.state.puzzleStr = sudoku.generate(app.state.difficulty);
                 app.state.puzzle = app.state.puzzleStr.split("");
 
-                app.state.solutionStr = sudoku.solve(app.state.puzzle);
+                app.state.solutionStr = sudoku.solve(app.state.puzzleStr);
                 app.state.solution = app.state.solutionStr.split("");
                 app.state.score = 0;
                 app.updateScore();
                 $("#score").innerHTML = "00000";
+                
+                $("#solveGame").classList.remove("disabled");
 
                 app.state.wordStr = app.state.words[Math.floor(Math.random() * app.state.words.length)].toUpperCase();
                 app.state.word = app.scrambleWord(app.state.wordStr.split(""));
@@ -84,6 +63,24 @@ function $$(str) {
                 for (let i = 0; i < app.state.word.length; i++) {
                     $("#num_" + (i + 1)).innerHTML = app.state.word[i];
                 }
+
+                let newPuzzle = [...app.state.solution]; 
+                let cell, rnd;
+                for (let i=0; i< (81 - app.config.difficulty[app.state.difficulty]); i++) {
+                    cell = undefined;
+                    while (!cell) {
+                        rnd = Math.floor(Math.random() * 81);
+                        if (newPuzzle[rnd]!='.') {
+                            cell = newPuzzle[rnd] = '.';
+                        }
+                    }
+                }
+                console.log("Old Puzzle: " + app.state.puzzleStr);
+                console.log("New Puzzle: " + newPuzzle.join(''));
+                
+                app.state.puzzleStr = newPuzzle.join('');
+                app.state.puzzle = [...newPuzzle];
+
                 console.log("New puzzle: " + app.state.puzzleStr);
                 sudoku.print_board(app.state.puzzleStr);
 
@@ -97,6 +94,11 @@ function $$(str) {
                 app.state.timer = setInterval(function() { app.updateTime(); }, 1000);
             });
             $("#solveGame").addEventListener("click", function(e) {
+                if (e.target.classList.contains('disabled')) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return false;
+                }
                 app.solve();
             });
             fetch("9plus.json").then(function(response) {
@@ -132,23 +134,28 @@ function $$(str) {
                 if (app.state.puzzle[i] != app.state.solution[i]) {
                     slofill.push({
                         "id": "#slot_" + i,
-                        "content": "<span class='num solved'>" + app.state.solution[i] + "</span>"
+                        "content": "<span class='num solved'>" + app.state.word[app.state.solution[i]-1] + "</span>"
                     });
                 }
             }
             app.state.slowFill = slofill;
-            app.slowFill();
+            app.slowFill(100);
         },
         slowFill: function(delay) {
-            if (!delay) delay = 10;
+            if (!delay) delay = 100;
             if (app.state.slowFill.length) {
-                const item = app.state.slowFill.shift();
-                $(item.id).innerHTML = item.content;
-                $(item.id + " span.num").style.transform = "scale(0)";
-                setTimeout(function() {
-                    $(item.id + " span.num").style.transform = "scale(1.5)";
-                }, delay);
+                const idx = Math.floor(Math.random() * app.state.slowFill.length);
+                const item = app.state.slowFill.splice(idx, 1)[0];
 
+                const el = $(item.id);
+
+                if (el) {
+                    $(item.id).innerHTML = item.content;
+                    setTimeout(function() {
+                        $(item.id + " span.num").classList.add('reveal');
+//                        $(item.id + " span.num").style.transform = 'scale(1.5)';
+                    }, 10);
+                }
                 setTimeout(function(delay) {
                     app.slowFill(delay);
                 }, delay);
@@ -157,26 +164,49 @@ function $$(str) {
         scale: function(who) {
             console.log("scaling " + who.id);
             who.classList.add("pop");
-            who.style.transform = "scale(1.5)";
+            who.classList.add("reveal");
+            // who.style.transform = "scale(1.5)";
+        },
+        fly: function(letter, from, to) {
+            let btn = app.state.word.findIndex(function(el) {
+               return el==letter;
+            });
+            let btnEl = $("#num_" + (btn + 1));
+            let fly = document.createElement("div");
+            fly.classList.add("fly");
+            fly.style.top = btnEl.offsetTop + "px";
+            fly.style.left = btnEl.offsetLeft + "px";
+            fly.innerHTML = letter;
+            fly.addEventListener("transitionend", function(e) {
+                console.dir(e);
+                if (e.target.parentElement) $("main").removeChild(e.target);
+            });
+            $("main").appendChild(fly);
+            setTimeout(function() {
+                fly.style.top = (app.state.lastClick.clientY - 32) + "px";
+                fly.style.left = (app.state.lastClick.clientX - 32) + "px";
+            }, 100);
         },
         handleClick: function(e) {
             let tgt = e.target;
             
             if (tgt.nodeName === "SPAN") {
-                tgt = tgt.offsetParent;
+                tgt = tgt.parentElement;
             }
             if (tgt.nodeName === "TD") {
+                if (tgt.classList.contains("oem")) {
+                    return false;
+                }
                 if (app.state.currentNumber) {
                     let newel = document.createElement("span");
                     newel.classList.add("num");
                     newel.innerText = app.state.word[app.state.currentNumber - 1];
-                    newel.style.transform = "scale(0)";
+                    // newel.style.transform = "scale(0)";
 
                     tgt.appendChild(newel);
                     setTimeout(function() {
                         app.scale(newel);
                     }, 100);
-
                     // tgt.innerHTML = "<span class='num pop'>" + app.state.word[app.state.currentNumber-1] + "</span>";
                     tgt.classList.add("selcell");
                     const cellID = tgt.id.replace(/^slot_/, '');
@@ -190,6 +220,7 @@ function $$(str) {
                         tgt.innerHTML = "";
                     } else {
                         app.state.puzzle[cellID] = app.state.currentNumber;
+                        app.fly(app.state.word[app.state.currentNumber - 1]);
 
                         if (app.state.solution[cellID] == app.state.currentNumber) {
                             tgt.classList.remove('bad');
@@ -212,6 +243,13 @@ function $$(str) {
                 }
             }
 
+        },
+        deselectCells: function(num) {
+            const sel = $$(".selcell");
+
+            sel.forEach(function(item) {
+                item.classList.remove("selcell");
+            });
         },
         selectCells: function(num) {
             const sel = $$(".selcell");
@@ -243,7 +281,7 @@ function $$(str) {
                     }
                 }
             }
-            app.slowFill(1);
+            app.slowFill(100);
         },
         lockNumber: function(num) {
             for (var i = 0; i < app.state.puzzle.length; i++) {
@@ -276,11 +314,10 @@ function $$(str) {
             }
         },
         revealLetter: function(who) {
-            for (let i=0; i<9; i++) {
-                if (app.state.word[i] == who) {
-                    $("#letter_"+i).value = who;
-                }
-            }
+            const ltr = app.state.word[who - 1];
+            let pos = app.state.wordStr.indexOf(ltr)+1;
+
+            $("#letter_"+pos).value = ltr;
         },
         checkCol: function(col) {
             for (var i = col; i < 81; i += 9) {
@@ -364,7 +401,16 @@ function $$(str) {
                 [54, 55, 56, 63, 64, 65, 72, 73, 74],
                 [57, 58, 59, 66, 67, 68, 75, 76, 77],
                 [60, 61, 62, 69, 70, 71, 78, 79, 80]
-            ]
+            ],
+            difficulty: {
+                        "easy":         62,
+                        "medium":       53,
+                        "hard":         44,
+                        "very-hard":    35,
+                        "insane":       26,
+                        "inhuman":      17,
+            }
+
         },
         updateScore: function(scr) {
             if (scr) app.state.score += scr;
@@ -379,7 +425,6 @@ function $$(str) {
 
                 points.innerHTML = (scr>0) ? '+' +  scr : scr;
                 points.addEventListener("transitionend", function(e) {
-                    console.log("TransitionEnd for point display.");
                     if (e.target.offsetParent) $("main").removeChild(e.target);
                 });
                 $("main").appendChild(points);
@@ -396,17 +441,41 @@ function $$(str) {
         genBoard: function() {
             let cnt = 0;
             let out = "<table id='board'>";
+            //out += "<colgroup class='colgroup' id='colgroup0' span='3'></colgroup><colgroup class='colgroup' id='colgroup1' span='3'></colgroup><colgroup class='colgroup' id='colgroup2' span='3'></colgroup>";
 
-            for (let r = 0; r < 9; r++) {
-                out += "<tr>";
-                for (let c = 0; c < 9; c++) {
-                    out += "<td id='slot_" + cnt + "'></td>";
-                    cnt++;
+            for (let rg = 0; rg < 3; rg++) {
+                out += "<tbody class='rowgroup' id='rowgroup"+rg+"'>";
+                for (let r = 0; r < 3; r++) {
+                    out += "<tr>";
+                    for (let cg = 0; cg < 3; cg++) {
+                        for (let c = 0; c < 3; c++) {
+                            out += "<td id='slot_" + cnt + "'></td>";
+                            cnt++;
+                        }
+                    }
+                    out += "</tr>";
                 }
-                out += "</tr>";
+                out += "</tbody>";
             }
             out += "</table>";
             $("#sudoku-board").innerHTML = out;
+
+            for (let i=1; i<app.config.squares.length; i+=2) {
+                for (let j=0; j<app.config.squares[i].length; j++) {
+                    $("#slot_"+app.config.squares[i][j]).classList.add('dark');
+                }
+            }
+        },
+        removeLetters: function(str, howMany) {
+            let pos, 
+                oemString = str;
+
+            for (let i=0; i<howMany; i++) {
+                pos = Math.floor(Math.random() * str.length);
+                str = str.substring(0, pos) + '.' + str.substring(pos+1); 
+            }
+
+            return str;
         },
         updateTime: function() {
             app.state.time++;
