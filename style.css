@@ -6,7 +6,7 @@ body {
     background-color: #333;
     color: #eee;
 }
-
+.label { font-size:14px; }
 .numButton {
     display: inline-block;
     text-decoration: none;
@@ -102,8 +102,8 @@ h1 {
     margin-bottom: 0px;
 }
 #buttons button#solveGame {
-    background: url("light.png");
-    background: url("light.png"), linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
+    background: url("img/light.png");
+    background: url("img/light.png"), linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
     background-size:100% 100%;
     background-repeat: no-repeat;
 }
@@ -207,8 +207,11 @@ table#board tr td.bad span.num {
     font-family: "Cute Font", cursive;
     color: #0c0;
     background-color: #000;
-    padding: 4px 8px;
+    padding: 2px 4px;
     border: 2px inset #fff;
+    display:inline-block;
+    width:2.3em;
+    font-size:24px;
 }
 
 table#board tr td span.solved {
@@ -216,7 +219,7 @@ table#board tr td span.solved {
 }
 
 #timeWrap,
-#scoreWrap {
+#scoreWrap, #difficultyWrap {
     display: inline-block;
     margin-right: .5em;
     float: left;
@@ -305,12 +308,22 @@ table#board tr td.selcell span.num.show {
         transform: scale(1.5);
     }
 }
-
+.levelLabel {
+    display:inline-block;
+    background-image: url("img/level.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position:relative;
+    width:1.5rem;
+    height:1.8rem;
+    float:left;
+    margin-top:0.15em;
+}
 #timeLabel {
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
-    background-image: url("stopwatch.png");
+    background-image: url("img/watch.png");
     background-size: contain;
     background-repeat: no-repeat;
     position:relative;
@@ -321,7 +334,7 @@ table#board tr td.selcell span.num.show {
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
-    background-image: url("score2.png");
+    background-image: url("img/score.png");
     background-size: contain;
     background-repeat: no-repeat;
     position:relative;
@@ -382,3 +395,31 @@ input[type=text] { text-align:center; text-transform:uppercase; font-weight:bold
     text-shadow: -1px -1px 0px #fff, 1px 1px 0px #fff;
     border: 2px solid #00f;
 }
+.level {
+    text-decoration:none;
+    position:relative;
+    display:inline-block;
+    width:0.5em;
+    transform-origin:bottom;
+}
+#levelTable {
+    background-color:#000;
+    border:2px inset #fff;
+    height:1.7em;
+}
+#levelTable td { 
+    vertical-align:bottom;
+    width:7px;
+}
+.levelSelected {
+    outline:2px solid #fff;
+}
+label {
+    margin-left:.3em;
+}
+.level_1 { transform:scaleY(0.16);background-color:#01ff00;color:#01ff00; }
+.level_2 { transform:scaleY(0.32);background-color:#5aff02;color:#5aff02; }
+.level_3 { transform:scaleY(0.48);background-color:#fff704;color:#fff704; }
+.level_4 { transform:scaleY(0.64);background-color:#ffa006;color:#ffa006; }
+.level_5 { transform:scaleY(0.8);background-color:#ff5608;color:#ff5608; }
+.level_6 { transform:scaleY(0.96);background-color:#ff0008;color:#ff0008; }

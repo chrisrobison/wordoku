@@ -7,11 +7,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nova+Flat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
-    <link rel='stylesheet' type='text/css' href='style.css'>
+    <link rel='stylesheet' type='text/css' href='lib/style.css'>
     <style>
 
     </style>
-    <script src='sudoku.js' async></script>
+    <script src='lib/sudoku.js' async></script>
 </head>
 
 <body id="home">
@@ -26,8 +26,28 @@
                 <label id='timeLabel' for='time'></label>
                 <span id='time'>00:00</span>
             </div>
-
-            <label for='difficulty'>Level</label>
+            <div id='difficultyWrap' style='display:inline-block;white-space:nowrap;'>
+                <label class='levelLabel'></label>
+                <datalist id='levels'>
+                    <option value='Easy' label='Easy'>Easy</option>
+                    <option>Average</option>
+                    <option label='Average'>Difficult</option>
+                    <option>Very Hard</option>
+                    <option>Insane</option>
+                    <option label="Hard">Robot</option>
+                </datalist>
+                <table id='levelTable'>
+                    <tr>
+                        <td><a class='level level_1' title='Easy' href='#easy'>▮</a></td>
+                        <td><a class='level level_2' title='Average' href='#medium'>▮</a></td>
+                        <td class='levelSelected'><a class='level level_3' title='Difficult' href='#hard'>▮</a></td>
+                        <td><a class='level level_4' title='Very Hard' href='#very-hard'>▮</a></td>
+                        <td><a class='level level_5' title='Insane' href='#insane'>▮</a></td>
+                        <td><a class='level level_6' title='Robot' href='#inhuman'>▮</a></td>
+                    </tr>
+                </table>
+            </div>
+            <!--label for='difficulty'>Level</label>
             <select id='difficulty'>
                 <option value="easy">Beginner</option>
                 <option value="medium">Easy</option>
@@ -36,7 +56,7 @@
                 <option value="insane">Insane</option>
                 <option value="inhuman">Robots</option>
                 <option value="import">Import...</option>
-            </select>
+            </select-->
             <div id='buttons'>
                 <button title='New Game' id='newGame'>▶</button>
                 <button title='Solve Game' class='disabled' id='solveGame'></button>
@@ -66,8 +86,9 @@
             <a href="#9" id='num_9' class='numButton'>9</a>
         </div>
     </main>
-    <script src='ui.js'></script>
+    <script src='lib/ui.js'></script>
     <script>
     </script>
 </body>
+
 </html>

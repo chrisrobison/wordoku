@@ -38,10 +38,18 @@ function $$(str) {
                     }
                 }
             });
+            $("#levelTable").addEventListener("click", function(e) {
+                app.state.difficulty = e.target.hash.replace(/^#/, '');
+                $(".levelSelected").classList.remove("levelSelected");
+                e.target.parentNode.classList.add('levelSelected');
+
+                console.log("New difficulty: " + app.state.difficulty);
+                console.dir(e);
+            });
             $("#newGame").addEventListener("click", function(e) {
                 console.dir(e);
                 let gameStr = '', limit = 250, count = 0;
-                app.state.difficulty = $("#difficulty").options[$("#difficulty").selectedIndex].value;
+                // app.state.difficulty = $("#difficulty").options[$("#difficulty").selectedIndex].value;
                 console.log("Attempting to find a good sudoku puzzle...");
                 
                 gameStr = sudoku.generate(app.state.difficulty);
@@ -167,7 +175,7 @@ function $$(str) {
             who.classList.add("reveal");
             // who.style.transform = "scale(1.5)";
         },
-        fly: function(letter, from, to) {
+        fly: function(letter, to) {
             let btn = app.state.word.findIndex(function(el) {
                return el==letter;
             });
@@ -346,11 +354,13 @@ function $$(str) {
         checkSquares: function() {
             for (var i = 0; i < app.config.squares.length; i++) {
                 if (app.checkSquare(i)) {
-                    if (!$("#slot_" + app.config.squares[i][0]).classList.contains("locked")) {
+                    //if (!$("#slot_" + app.config.squares[i][0]).classList.contains("locked")) {
+                    if (!app.state.squares[i]) {
                         for (var x = 0; x < app.config.squares[i].length; x++) {
                             $("#slot_" + app.config.squares[i][x]).classList.add("locked");
                         }
                         app.updateScore(600);
+                        app.state.squares[i] = true;
                     }
                 }
             }
@@ -381,6 +391,11 @@ function $$(str) {
             }
             app.checkSquares();
             app.checkNumbers();
+            if (app.state.puzzle.join('') == app.state.solution.join('')) {
+                app.deselectCells();
+                clearTimeout(app.state.timer);
+                alert("You win!!");
+            }
         },
         state: {
             currentNumber: null,
@@ -388,7 +403,9 @@ function $$(str) {
             puzzle: '',
             score: 0,
             time: 0,
-            slowFill: []
+            slowFill: [],
+            difficulty: "hard",
+            squares:[0,0,0,0,0,0,0,0,0]
         },
         config: {
             squares: [
