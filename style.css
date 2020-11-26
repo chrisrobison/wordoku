@@ -7,19 +7,69 @@ body {
     color: #eee;
 }
 .label { font-size:14px; }
+.button:hover {
+    transform:scale(1.2);
+    background-color:#eee;
+}
+canvas {
+    pointer-events:none;
+}
+.button {
+
+    /* text */
+    text-decoration:        none;
+    font:                   22px/1em 'Droid Sans', sans-serif;
+    font-weight:            bold;
+    text-shadow:            rgba(255,255,255,.5) 0 1px 0;
+    user-select:            none;
+    width: 0.8em;
+
+    /* layout */
+    padding:                .5em .75em .4em .65em;
+    margin:                 .25em 0px .75em 0px;
+    display:                inline-block;
+    position:               relative;
+
+    border-radius:  50%;
+
+    /* effects */
+    border-top:         1px solid rgba(255,255,255,0.8);
+    border-bottom:      1px solid rgba(0,0,0,0.1);
+
+    background-image:   gradient(radial, 50% 0, 100, 50% 0, 0, from( rgba(255,255,255,0) ), to( rgba(255,255,255,0.7) )), url(https://lh4.googleusercontent.com/-Qs9-Ohgo6sk/UY11O1WoMQI/AAAAAAAACME/nUID7awcMow/s50-no/noise.png);
+
+    transition:         all .2s ease-in-out;
+
+    /* color */
+    color:              hsl(0, 0%, 0%);
+    text-shadow: 1px 1px 0px #fff;
+    background-color:   hsl(0, 0%, 75%);
+
+    -webkit-box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ 
+    hsl(0, 0%, 60%) 0 .1em 3px, hsl(0, 0%, 45%) 0 .3em 1px, /* color border */
+    rgba(0,0,0,0.2) 0 .5em 5px; /* drop shadow */
+    -moz-box-shadow:    inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ 
+    hsl(0, 0%, 60%) 0 .1em 3px, hsl(0, 0%, 45%) 0 .3em 1px, /* color border */
+    rgba(0,0,0,0.2) 0 .5em 5px; /* drop shadow */
+    box-shadow:         inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ 
+    hsl(0, 0%, 60%) 0 .1em 3px, hsl(0, 0%, 45%) 0 .3em 1px, /* color border */
+    rgba(0,0,0,0.2) 0 .5em 5px; /* drop shadow */
+}
+
 .numButton {
     display: inline-block;
     text-decoration: none;
     color: #000;
     height: 1.5em;
     padding-top: .25em;
-    border: 1px solid #000;
+    border: 1px double #000;
     background-color: #ddd;
     margin: .5em .125em;
     text-align: center;
     transition: all 100ms cubic-bezier(.47, 1.64, .41, .8);
-    box-shadow: 1px 1px 1px #0008;
+    box-shadow: 3px 3px 2px #0008;
     border-radius: 2em;
+    text-shadow: 1px 1px 0px #fff;
     width: 1.8em;
 }
 
@@ -32,13 +82,14 @@ body {
     box-shadow: 0px 0px 0px #0000;
     transform:scale(1);
     background-color:#999;
+    filter:grayscale(100%) brightness(0.5);
 }
 a.numButton.selected:hover {
     transform: scale(1.4) translateY(-3px);
     background-color:#0060a1;
 }
 #numbers {
-    width: 22em;
+    width: 23em;
     text-align: center;
     border: .5em solid #000;
     margin-left: auto;
@@ -46,6 +97,7 @@ a.numButton.selected:hover {
     margin-top: 0px;
     background-color: #666;
     box-shadow: 0 .5em .5em #0008;
+    white-space:nowrap;
 }
 
 #board {
@@ -150,7 +202,7 @@ h1 {
 }
 
 table#board tr td.selcell {
-    background-color: #0f0;
+    background-color: #ff9;
     color: #000;
     font-weight: normal;
 }
@@ -161,9 +213,9 @@ table#board tr td.selcell span.num {
     width: 1.25em;
     display: inline-block;
     transition: all 200ms cubic-bezier(.47, 1.64, .41, .8);
+    transform:scale(1.2);
     /* transform:scale(0); */
     font-size:32px;
-    position:relative;
     background-color:#fff;
 }
 
@@ -227,7 +279,7 @@ table#board tr td span.solved {
 
 .disabled {
     background-color: #999;
-    color: #666;
+    color: #aaa;
     border-color: #666;
     box-shadow: 0px 0px 0px #000;
     cursor:not-allowed;
@@ -249,29 +301,29 @@ table#board tr td span.solved {
     outline: 0px;
 }
 
-.bounce {
-    animation: 2s bounce;
+span.bounce {
+    animation: 1500ms bounce ease-in;
 }
 
 @keyframes bounce {
     0% {
-        transform: scale(1.5);
+        transform: scale(.5);
     }
 
     20% {
-        transform: scale(2.5);
+        transform: scale(2);
     }
 
     40% {
-        transform: scale(1);
+        transform: scale(.75);
     }
 
     60% {
-        transform: scale(2.5);
+        transform: scale(1.5);
     }
 
     80% {
-        transform: scale(1);
+        transform: scale(.9);
     }
 
     100% {
@@ -282,14 +334,14 @@ table#board tr td.selcell span.num.toreveal {
     transform:scale(0);
 }
 table#board tr td span.num.reveal { 
-    transform:scale(1);
+    transform:scale(1); 
 }
 .pop {
     animation: pop 1000ms cubic-bezier(.47, 1.64, .41, .8);
 }
 
 table#board tr td.selcell span.num.show { 
-    transform: scale(1.5);
+    transform: scale(1);
 }
 @keyframes pop {
     0% {
@@ -297,15 +349,15 @@ table#board tr td.selcell span.num.show {
     }
 
     33% {
-        transform: scale(2);
+        transform: scale(1.5);
     }
 
     66% {
-        transform: scale(1);
+        transform: scale(.5);
     }
 
     100% {
-        transform: scale(1.5);
+        transform: scale(1);
     }
 }
 .levelLabel {
@@ -423,3 +475,57 @@ label {
 .level_4 { transform:scaleY(0.64);background-color:#ffa006;color:#ffa006; }
 .level_5 { transform:scaleY(0.8);background-color:#ff5608;color:#ff5608; }
 .level_6 { transform:scaleY(0.96);background-color:#ff0008;color:#ff0008; }
+ .explosion .particle {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      animation: pop 2000ms reverse forwards;
+      animation-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335);
+ }
+.youwin {
+    animation: ease-in-out 1500ms 6 alternate zoom;
+    position:absolute;
+    top:30vh;
+    left:32vw;
+    width:8em;
+    height:2em;
+    padding-top:1em;
+    color:#ffff00;
+    font-size:3em;
+    text-shadow:2px 2px 2px #000c;
+    font-weight:bold;
+    text-transform:uppercase;
+    opacity:1;
+    transition:opacity 1000ms linear;
+}
+ @keyframes zoom {
+    from {
+        transform:scale(1);
+    }
+    to {
+        transform:scale(2);
+    }
+ }
+
+
+ @keyframes pop {
+    from {
+        opacity: 0;
+        height:0px;
+        width:0px;
+    }
+    to {
+        top: 50%;
+        left: 50%;
+        opacity: 1;
+    }
+ }
+
+ .explosion {
+    position:absolute;
+    height:600px;
+    width:600px;
+    pointer-events:none;
+ }
+

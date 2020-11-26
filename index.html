@@ -9,9 +9,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
     <link rel='stylesheet' type='text/css' href='style.css'>
     <style>
-
+canvas {
+    pointer-events:none;
+}
+#defaultCanvas0 {
+    position:absolute;
+    top:0px;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    opacity:.5; 
+    pointer-events:none;
+}
     </style>
     <script src='lib/sudoku.js' async></script>
+
 </head>
 
 <body id="home">
@@ -75,15 +87,15 @@
             <input type='text' class='wordletter' id='letter_9'>
         </div>
         <div id='numbers'>
-            <a href="#1" id='num_1' class='numButton'>1</a>
-            <a href="#2" id='num_2' class='numButton'>2</a>
-            <a href="#3" id='num_3' class='numButton'>3</a>
-            <a href="#4" id='num_4' class='numButton'>4</a>
-            <a href="#5" id='num_5' class='numButton'>5</a>
-            <a href="#6" id='num_6' class='numButton'>6</a>
-            <a href="#7" id='num_7' class='numButton'>7</a>
-            <a href="#8" id='num_8' class='numButton'>8</a>
-            <a href="#9" id='num_9' class='numButton'>9</a>
+            <a href="#1" id='num_1' class='button'>1</a>
+            <a href="#2" id='num_2' class='button'>2</a>
+            <a href="#3" id='num_3' class='button'>3</a>
+            <a href="#4" id='num_4' class='button'>4</a>
+            <a href="#5" id='num_5' class='button'>5</a>
+            <a href="#6" id='num_6' class='button'>6</a>
+            <a href="#7" id='num_7' class='button'>7</a>
+            <a href="#8" id='num_8' class='button'>8</a>
+            <a href="#9" id='num_9' class='button'>9</a>
         </div>
     </main>
     <script src='lib/ui.js'></script>
