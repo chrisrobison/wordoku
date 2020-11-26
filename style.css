@@ -102,8 +102,8 @@ h1 {
     margin-bottom: 0px;
 }
 #buttons button#solveGame {
-    background: url("../img/light.png");
-    background: url("../img/light.png"), linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
+    background: url("img/light.png");
+    background: url("img/light.png"), linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
     background-size:100% 100%;
     background-repeat: no-repeat;
 }
@@ -310,7 +310,7 @@ table#board tr td.selcell span.num.show {
 }
 .levelLabel {
     display:inline-block;
-    background-image: url("../img/level.png");
+    background-image: url("img/level.png");
     background-size: contain;
     background-repeat: no-repeat;
     position:relative;
@@ -323,7 +323,7 @@ table#board tr td.selcell span.num.show {
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
-    background-image: url("../img/watch.png");
+    background-image: url("img/watch.png");
     background-size: contain;
     background-repeat: no-repeat;
     position:relative;
@@ -334,7 +334,7 @@ table#board tr td.selcell span.num.show {
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
-    background-image: url("../img/score.png");
+    background-image: url("img/score.png");
     background-size: contain;
     background-repeat: no-repeat;
     position:relative;
