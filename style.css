@@ -1,11 +1,12 @@
 body {
     margin: 0;
     padding: 0;
-    font-size: 22px;
+    font-size: 28px;
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     background-color: #333;
     color: #eee;
     user-select:none;
+    text-align:center;
 }
 .label { font-size:14px; }
 .button:hover {
@@ -56,6 +57,14 @@ canvas {
     hsl(0, 0%, 60%) 0 .1em 3px, hsl(0, 0%, 45%) 0 .3em 1px, /* color border */
     rgba(0,0,0,0.2) 0 .5em 5px; /* drop shadow */
 }
+@media only screen and (max-width:600px) {
+    body {
+        font-size:22px;
+    }
+    .button {
+        font:                   18px/1em 'Droid Sans', sans-serif;
+    }
+}
 
 .numButton {
     display: inline-block;
@@ -90,7 +99,6 @@ a.numButton.selected:hover {
     background-color:#0060a1;
 }
 #numbers {
-    width: 23em;
     text-align: center;
     border: .5em solid #000;
     margin-left: auto;
@@ -100,20 +108,29 @@ a.numButton.selected:hover {
     box-shadow: 0 .5em .5em #0008;
     white-space:nowrap;
 }
+@media only screen and (max-width:320px) {
+    .button {
+        font-size:13px;
+    }
 
+}@media only screen and (max-width:600px) {
+    #numbers {
+        border-left:0px;
+        border-right:0px;
+    }
+
+}
 #board {
-    margin-left: auto;
-    margin-right: auto;
     border-collapse: collapse;
     background-color: #eee;
-    border: 1em solid #000;
-    box-shadow: 0 .5em .5em #0006;
-    border-radius: 1em;
+    border: .5em solid #000;
+    margin: 0 auto;
+    width:100%;
 }
 
 #board td {
-    width: 2em;
-    height: 2em;
+    width: 11.11%;
+    height: 5vh;
     border: 1px solid #666;
     color: #333;
     text-align: center;
@@ -155,6 +172,9 @@ h1 {
     text-transform: uppercase;
     text-shadow: 4px 4px 1px #000c;
     margin-bottom: 0px;
+    margin-top:0px;
+    padding-top:.35em;
+    background-color: #39f;
 }
 #buttons button#solveGame {
     background: url("img/light.png");
@@ -182,12 +202,13 @@ h1 {
 
 #toolbar {
     text-align: center;
-    margin: .5em auto 0 auto;
-    width: 21em;
+    margin: 0 auto 0 auto;
     background-color: #bbb;
-    padding: .5em .5em;
-    border: .5em solid #000;
+    padding: .25em 0px .5em .25em;
+    border: .25em solid #000;
     height: 1.5em;
+    border-left:0px;
+    border-right:0px;
 }
 
 #toolbar label {
@@ -199,7 +220,10 @@ h1 {
     position:relative;
     top:-4px;
 }
-
+#settings {
+    font-size:1.5em;
+    
+}
 .locked {
     font-weight: bold;
 }
@@ -218,7 +242,6 @@ table#board tr td.selcell span.num {
     transition: all 200ms cubic-bezier(.47, 1.64, .41, .8);
     transform:scale(1.2);
     /* transform:scale(0); */
-    font-size:32px;
     background-color:#fff;
 }
 
@@ -265,8 +288,14 @@ table#board tr td.bad span.num {
     padding: 2px 4px;
     border: 2px inset #fff;
     display:inline-block;
-    width:2.3em;
-    font-size:24px;
+    width:2.7em;
+    font-size:1.2em;
+}
+@media only screen and (max-width:600px) {
+    #time, #score {
+        width:2.1em;
+        font-size:.9em;
+    }
 }
 
 table#board tr td span.solved {
@@ -276,7 +305,6 @@ table#board tr td span.solved {
 #timeWrap,
 #scoreWrap, #difficultyWrap {
     display: inline-block;
-    margin-right: .5em;
     float: left;
 }
 
@@ -294,7 +322,6 @@ table#board tr td span.solved {
     border-radius: 2em;
     transition: transform 200ms cubic-bezier(.47, 1.64, .41, .8);
     transform: scale(0);
-    font-size:32px;
 }
 
 :focus {
@@ -369,7 +396,7 @@ table#board tr td.selcell span.num.show {
     width:0.9rem;
     height:1.8rem;
     float:left;
-    margin-top:0.15em;
+    margin-top:0.35em;
     box-shadow: 1px 1px 1px #000a;
     margin-right:.25rem;
 
@@ -418,22 +445,36 @@ table#board tr td.selcell span.num.show {
 }
 .wordletter {
     width: 1em;
-    font-size:24px;
-    margin:0 .25em; 
+    font-size:.9em;
 }
 #word {
     text-align:center;
     background-color:#ccc; 
-    width:22em;
     padding:.25em 0;
     border:.5em solid #000;
     border-bottom:0px;
-    display:inline-block;
+    border-top:0px;
     margin-left:auto;
     margin-right:auto;
     position:relative;
 }
-main { text-align: center; }
+
+main {
+    text-align: center; 
+    overflow:hidden;
+    max-width:35rem;
+    height: 99vh;
+    margin: 0 auto;
+}
+@media only screen and (max-width:600px) {
+    #word { border-left:0px; border-right:0px; }
+}
+@media only screen and (min-width:600px) {
+    main {
+        border-left:1em solid #666;
+        border-right:1em solid #666;
+    }
+}
 .dark { background-color:#bbb; }
 input[type=text] { text-align:center; text-transform:uppercase; font-weight:bold;}
 .fly {
@@ -454,17 +495,23 @@ input[type=text] { text-align:center; text-transform:uppercase; font-weight:bold
     text-decoration:none;
     position:relative;
     display:inline-block;
-    width:0.5em;
+    width:0.3em;
     transform-origin:bottom;
 }
 #levelTable {
     background-color:#000;
     border:2px inset #fff;
     height:1.7em;
+    border-collapse:collapse;
 }
 #levelTable td { 
     vertical-align:bottom;
-    width:7px;
+    width:.4em;
+}
+@media only screen and (max-width:600px) {
+    #levelTable td {
+        width:7px; 
+    }
 }
 .levelSelected {
     outline:2px solid #fff;
