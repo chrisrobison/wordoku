@@ -529,9 +529,17 @@ label {
       position: absolute;
       width: 20px;
       height: 20px;
-      border-radius: 100%;
-      animation: pop 2000ms reverse forwards;
-      animation-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335);
+    animation: spinner0 1000ms linear reverse forwards; 
+
+ }
+.explosion .bs0 { box-shadow: .5em .5em .5em #fffa, -.5em -.5em .5em #fffa, -.5em 0px .5em #fffa, 0px -.5em .5em #fffa; }
+.explosion .bs1 { box-shadow: .5em .5em .5em #fcca, -.5em -.5em .5em #fccc, -.5em 0px .5em #fccc, 0px -.5em .5em #fccc; }
+.explosion .bs2 { box-shadow: .5em .5em .5em #ff0a, -.5em -.5em .5em #ff09, -.5em 0px .5em #ff09, 0px -.5em .5em #ff09; }
+ .spin0 {
+    animation: spinner0 1000ms linear reverse forwards; 
+ }
+ .spin1 {
+    animation: spinner1 1000ms linear reverse forwards; 
  }
 .youwin {
     animation: ease-in-out 1500ms 6 alternate zoom;
@@ -559,7 +567,7 @@ label {
  }
 
 
- @keyframes pop {
+ @keyframes pop2 {
     from {
         opacity: 0;
         height:0px;
@@ -578,4 +586,32 @@ label {
     width:600px;
     pointer-events:none;
  }
+@keyframes spinner0 {
+    0% { 
+        transform: rotate3d(1, -1, 1, 1440deg);
+        opacity: 0;
+        height:0px;
+        width:0px;
+}
+    100% { 
+        transform: rotate3d(1, -1, 1, -1440deg);
+        top: 50%;
+        left: 50%;
+        opacity: 1;
+    }
+}
+@keyframes spinner1 {
+    0% { 
+        transform: rotate3d(-1, 1, -1, -1440deg);
+        opacity: 0;
+        height:0px;
+        width:0px;
+}
+    100% { 
+        transform: rotate3d(-1, 1, -1, 1440deg);
+        top: 50%;
+        left: 50%;
+        opacity: 1;
+    }
+}
 
