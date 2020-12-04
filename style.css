@@ -535,11 +535,13 @@ label {
 .explosion .bs0 { box-shadow: .5em .5em .5em #fffa, -.5em -.5em .5em #fffa, -.5em 0px .5em #fffa, 0px -.5em .5em #fffa; }
 .explosion .bs1 { box-shadow: .5em .5em .5em #fcca, -.5em -.5em .5em #fccc, -.5em 0px .5em #fccc, 0px -.5em .5em #fccc; }
 .explosion .bs2 { box-shadow: .5em .5em .5em #ff0a, -.5em -.5em .5em #ff09, -.5em 0px .5em #ff09, 0px -.5em .5em #ff09; }
- .spin0 {
+.explosion  .spin0 {
     animation: spinner0 1000ms linear reverse forwards; 
+        box-shadow: 0px 0px 0px #fff0, 0px 0px 0px #fff0, 0px 0px 0px #fff0, 0px 0px 0px #fff0;
  }
- .spin1 {
+.explosion  .spin1 {
     animation: spinner1 1000ms linear reverse forwards; 
+        box-shadow: 0px 0px 0px #fff0, 0px 0px 0px #fff0, 0px 0px 0px #fff0, 0px 0px 0px #fff0;
  }
 .youwin {
     animation: ease-in-out 1500ms 6 alternate zoom;
@@ -606,12 +608,14 @@ label {
         opacity: 0;
         height:0px;
         width:0px;
+        box-shadow: 2em 2em 2em #fffa, -2em -2em 2em #fffa, -2em 0px 2em #fffa, 0px -2em 2em #fffa;
 }
     100% { 
         transform: rotate3d(-1, 1, -1, 1440deg);
         top: 50%;
         left: 50%;
         opacity: 1;
+        box-shadow: 0px 0px 0px #fff0, 0px 0px 0px #fff0, 0px 0px 0px #fff0, 0px 0px 0px #fff0;
     }
 }
 
