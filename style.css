@@ -465,6 +465,7 @@ main {
     max-width:35rem;
     height: 99vh;
     margin: 0 auto;
+    position:relative;
 }
 @media only screen and (max-width:600px) {
     #word { border-left:0px; border-right:0px; }
@@ -618,4 +619,28 @@ label {
         box-shadow: 0px 0px 0px #fff0, 0px 0px 0px #fff0, 0px 0px 0px #fff0, 0px 0px 0px #fff0;
     }
 }
+#menu {
+    transition:all 250ms linear;
+    display:block;
+    background-color:#ddd;
+    position:absolute;
+    top:10%;
+    left:0px;
+    width:100%;
+    height:0px;
+    overflow:hidden;
+}
 
+#menu ul {
+    list-style-type:none;
+    margin:25% 0 0 0;
+    padding:0;
+}
+#menu ul li button {
+    width:100%;
+    height:4rem;
+    margin:0;
+    font-size:24px;
+    padding:.25em 0px;
+
+}
