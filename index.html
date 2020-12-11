@@ -60,16 +60,6 @@ canvas {
                     </tr>
                 </table>
             </div>
-            <!--label for='difficulty'>Level</label>
-            <select id='difficulty'>
-                <option value="easy">Beginner</option>
-                <option value="medium">Easy</option>
-                <option value="hard">Average</option>
-                <option value="very-hard" SELECTED>Difficult</option>
-                <option value="insane">Insane</option>
-                <option value="inhuman">Robots</option>
-                <option value="import">Import...</option>
-            </select-->
             <div id='buttons'>
                 <button title='New Game' id='newGame'>▶</button>
                 <button title='Solve Game' class='disabled' id='solveGame'></button>
@@ -102,13 +92,19 @@ canvas {
             <ul>
                 <li><button id='resume'>Resume Game</button></li>
                 <li><button id='quitGame'>New Game</button></li>
-                <li><button id='highScores'>High Scores...</button></li>
+                <li><button id='highScoresBtn'>High Scores...</button></li>
                 <li><button id='gameHistory'>Game History...</button></li>
-                <li><button id='about'>About...</button></li>
-                <li><button id='help'>Help...</button></li>
+                <li><button id='aboutBtn'>About...</button></li>
+                <li><button id='helpBtn'>Help...</button></li>
             </ul>
         </nav>
-        <div id='history'>
+        <div id='highScores' class='dialog'>
+        </div>
+        <div id='history' class='dialog'>
+        </div>
+        <div id='about' class='dialog'>
+        </div>
+        <div id='help' class='dialog'>
         </div>
     </main>
     <script src='lib/ui.js'></script>
