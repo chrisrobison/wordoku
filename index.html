@@ -12,6 +12,7 @@
     <meta property="og:url" content="https://chrisrobison.github.io/wordoku/">
     <meta property="og:image" content="">
 
+    <script src='lib/sudoku.js' async></script>
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nova+Flat&display=swap" rel="stylesheet">
@@ -31,13 +32,12 @@ canvas {
     pointer-events:none;
 }
     </style>
-    <script src='lib/sudoku.js' async></script>
 
 </head>
 
 <body id="home">
     <main>
-        <h1>Wordoku</h1>
+        <h1>Sudoku: Words</h1>
         <div id='toolbar'>
             <div id='scoreWrap'>
                 <label id='scoreLabel' for='score'></label>
@@ -62,7 +62,6 @@ canvas {
             </div>
             <div id='buttons'>
                 <button title='New Game' id='newGame'>▶</button>
-                <button title='Solve Game' class='disabled' id='solveGame'></button>
             </div>
         </div>
         <div id='sudoku-board'></div>
@@ -92,10 +91,11 @@ canvas {
             <ul>
                 <li><button id='resume'>Resume Game</button></li>
                 <li><button id='quitGame'>New Game</button></li>
-                <li><button id='highScoresBtn'>High Scores...</button></li>
-                <li><button id='gameHistory'>Game History...</button></li>
-                <li><button id='aboutBtn'>About...</button></li>
-                <li><button id='helpBtn'>Help...</button></li>
+                <li><button id='solveGame' class='disabled'><span class='puzzleIcon'></span> Solve Game</button></li>
+                <li><button id='highScoresBtn'><span class='trophy'>🏆</span> High Scores...</button></li>
+                <li><button id='gameHistory'><span class='historyIcon'></span> Game History...</button></li>
+                <li><button id='aboutBtn'><span class='infoIcon'></span> About...</button></li>
+                <li><button id='helpBtn'><span class='helpIcon'></span> Help...</button></li>
             </ul>
         </nav>
         <div id='highScores' class='dialog'>
