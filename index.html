@@ -61,7 +61,7 @@ canvas {
                 </table>
             </div>
             <div id='buttons'>
-                <button title='New Game' id='newGame'>▶</button>
+                <button title='New Game' id='newGame'>⚙</button>
             </div>
         </div>
         <div id='sudoku-board'></div>
@@ -89,13 +89,13 @@ canvas {
         </div>
         <nav id='menu'>
             <ul>
-                <li><button id='resume'>Resume Game</button></li>
-                <li><button id='quitGame'>New Game</button></li>
-                <li><button id='solveGame' class='disabled'><span class='puzzleIcon'></span> Solve Game</button></li>
-                <li><button id='highScoresBtn'><span class='trophy'>🏆</span> High Scores...</button></li>
-                <li><button id='gameHistory'><span class='historyIcon'></span> Game History...</button></li>
-                <li><button id='aboutBtn'><span class='infoIcon'></span> About...</button></li>
-                <li><button id='helpBtn'><span class='helpIcon'></span> Help...</button></li>
+                <li><button id='resume'><span class='icon backIcon'></span><span class='btnLabel'>Resume Game</span></button></li>
+                <li><button id='quitGame'><span class='icon newGameIcon'></span><span class='btnLabel'>New Game</span></button></li>
+                <li><button id='solveGame' class='disabled'><span class='icon puzzleIcon'></span><span class='btnLabel'>Solve Game</span></button></li>
+                <li><button id='highScoresBtn'><span class='icon trophy'>🏆</span><span class='btnLabel'>High Scores...</span></button></li>
+                <li><button id='gameHistory'><span class='icon historyIcon'></span><span class='btnLabel'>Game History...</span></button></li>
+                <li><button id='aboutBtn'><span class='icon infoIcon'></span><span class='btnLabel'>About...</span></button></li>
+                <li><button id='helpBtn'><span class='icon helpIcon'></span><span class='btnLabel'>Help...</span></button></li>
             </ul>
         </nav>
         <div id='highScores' class='dialog'>
