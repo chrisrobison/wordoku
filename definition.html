@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+<style>
+    body {
+        margin:0;
+        padding:0;
+        font-size:16px;
+        font-family: "Helvetica Neue","Helvetica","Arial",sans-serif;
+    }
+    header {
+        background-color:#999;
+        color:#eee;
+        height:5vh;
+    }
+    main {
+        background-color:#333;
+        color:#ddd;
+        height:90vh;
+        padding:1em;
+    }
+    footer {
+        background-color:#666;
+        color:#eee;
+        height:5vh;
+    }
+    input {
+        font-size:24px;
+    }
+    label {
+        font-size:24px;
+        font-weight:bold;
+    }
+    button {
+        font-size:24px;
+        border-radius:1em;
+        margin-left:1em;
+        color:#eee;
+        background-color:#06f;
+        box-shadow:3px 3px 3px #000a;
+        border: 0px;
+        padding:.5em 1em;
+    }
+    button:active {
+        box-shadow:0px 0px 3px #000a;
+        top:3px;
+        position:relative;
+    }
+    button:focus {
+        outline:0px;
+    }
+</style>
+</head>
+
+<body id="home">
+    <header>
+    </header>
+    <main>
+        <label for='word'>Word: </label>
+        <input type='text' id='word' size='15'><button id='lookup'>Lookup</button>
+        <div id='results'></div>
+    </main>
+    <footer>
+    </footer>
+<script>
+    function $(str) { return document.querySelector(str); }
+    function $$(str) { return document.querySelectorAll(str); }
+
+    (function() {
+        const app = {
+            init: function() {
+                app.state.loaded = true;
+                $("#word").focus();
+                $("#lookup").addEventListener("click", function(evt) {
+                    let word = $("#word").value;
+                    if (word) {
+                        app.lookup(word);
+                    }
+                    $("#word").focus();
+                });
+            },
+            state: {
+                loaded: false
+            },
+            lookup: function(word) {
+                fetch("https://wordsapiv1.p.rapidapi.com/words/" + word + "/definitions", {
+                        "method": "GET",
+                        "headers": {
+                                    "x-rapidapi-key": "9fee8b3df9msh262d0d55f89d55ep17fbf6jsn0e327d49bcf5",
+                                    "x-rapidapi-host": "wordsapiv1.p.rapidapi.com"
+                                }
+                }).then(response => {
+                    console.log(response);
+                    return response.json();
+                }).then(data=>{
+                    let out = "<h2>" + data.word + "</h2>";
+                    out += "<ul>";
+                    
+                    for (let i in data.definitions) {
+                        out += "<li>[<em>" + data.definitions[i].partOfSpeech + "</em>] " + data.definitions[i].definition + "</li>";
+                    }
+                    out += "</ul>";
+                    $("#results").innerHTML = out;
+                    console.log(data);
+                }) 
+                    .catch(err => {
+                            console.error(err);
+                    });
+            }
+        }
+        window.app = app;
+        app.init();
+    })();
+</script>
+</body>
+</html>
