@@ -19,20 +19,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nova+Flat&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel='stylesheet' type='text/css' href='style.css'>
     <style>
-canvas {
-    pointer-events:none;
-}
-#defaultCanvas0 {
-    position:absolute;
-    top:0px;
-    left:0px;
-    right:0px;
-    bottom:0px;
-    opacity:.5; 
-    pointer-events:none;
-}
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 48
+        }
+        canvas {
+            pointer-events:none;
+        }
+        #defaultCanvas0 {
+            position:absolute;
+            top:0px;
+            left:0px;
+            right:0px;
+            bottom:0px;
+            opacity:.5; 
+            pointer-events:none;
+        }
     </style>
 
 </head>
@@ -63,7 +71,9 @@ canvas {
                 </table>
             </div>
             <div id='buttons'>
-                <button title='New Game' id='newGame'>⚙</button>
+                <button title='New Game' id='newGame'><span class="material-symbols-outlined">play_circle</span></button>
+                <button title='Resume Game' id='resumeGame' style="display:none"><span class="material-symbols-outlined">pause_circle</span></button>
+                <button title='Settings' id='settings'>⚙</button>
             </div>
         </div>
         <div id='sudoku-board'></div>

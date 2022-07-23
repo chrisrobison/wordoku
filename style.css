@@ -234,7 +234,7 @@ h1 {
     background-repeat: no-repeat;
 }
 
-#buttons button#newGame {
+#buttons button {
     background: linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
     background-repeat: no-repeat;
     font-size: 38px;
@@ -272,6 +272,8 @@ h1 {
     float: right;
     position: relative;
     margin-right: .5em;
+    display:flex;
+    flex-direction: row;
 }
 
 #settings {
@@ -332,7 +334,8 @@ table#board tr td.bad span.num {
     text-shadow: -1px -1px 0px #fff;
     background: linear-gradient(to bottom, rgba(246, 248, 249, 1) 0%, rgba(229, 235, 238, 1) 50%, rgba(215, 222, 227, 1) 51%, rgba(245, 247, 249, 1) 100%);
     transition: all 100ms;
-    padding: .25em .3em;
+    padding: 0px 0em;
+    margin-right: 0.3em;
 }
 
 #time,
@@ -932,4 +935,6 @@ label {
     left: -0.65rem;
 }
 
-
+button .material-symbols-outlined {
+    font-size: 32px;
+}
